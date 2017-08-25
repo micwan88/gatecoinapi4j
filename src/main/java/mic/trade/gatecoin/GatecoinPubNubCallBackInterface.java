@@ -4,7 +4,7 @@ import com.pubnub.api.PubNub;
 import com.pubnub.api.models.consumer.PNStatus;
 import com.pubnub.api.models.consumer.pubsub.PNMessageResult;
 
-import mic.trade.bean.ThreadMessageBus;
+import mic.trade.bean.TradeMessage;
 
 public interface GatecoinPubNubCallBackInterface {
 	public void connectedCallBack(PubNub pubnub, PNStatus status);
@@ -23,7 +23,7 @@ public interface GatecoinPubNubCallBackInterface {
 	
 	public void msgTickerHistoryCallBack(PubNub pubnub, PNMessageResult message);
 	
-	public ThreadMessageBus getMessageBus();
+	public TradeMessage getMessageBus();
 	
 	public void destroy();
 }

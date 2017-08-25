@@ -1,6 +1,6 @@
 package mic.trade.bean;
 
-public class ThreadMessageBus {
+public class TradeMessage {
 	private String errMsg = null;
 
 	/**
