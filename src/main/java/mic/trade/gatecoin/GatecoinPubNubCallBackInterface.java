@@ -4,6 +4,8 @@ import com.pubnub.api.PubNub;
 import com.pubnub.api.models.consumer.PNStatus;
 import com.pubnub.api.models.consumer.pubsub.PNMessageResult;
 
+import mic.trade.bean.ThreadMessageBus;
+
 public interface GatecoinPubNubCallBackInterface {
 	public void connectedCallBack(PubNub pubnub, PNStatus status);
 	

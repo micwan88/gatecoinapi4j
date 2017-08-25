@@ -1,4 +1,4 @@
-package mic.trade.gatecoin;
+package mic.trade;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -7,7 +7,7 @@ import mic.trade.bean.MarketDepth;
 import mic.trade.bean.Order;
 import mic.trade.bean.Transaction;
 
-public interface GatecoinTradeServiceAdapter {
+public interface TradeServiceAdapter {
 	public void closeService();
 	
 	public List<Transaction> getTransactionList(String currency);

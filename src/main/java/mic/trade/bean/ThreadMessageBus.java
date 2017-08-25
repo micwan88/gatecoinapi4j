@@ -1,4 +1,4 @@
-package mic.trade.gatecoin;
+package mic.trade.bean;
 
 public class ThreadMessageBus {
 	private String errMsg = null;

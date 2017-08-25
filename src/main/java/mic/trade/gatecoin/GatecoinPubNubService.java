@@ -14,6 +14,8 @@ import com.pubnub.api.models.consumer.PNStatus;
 import com.pubnub.api.models.consumer.pubsub.PNMessageResult;
 import com.pubnub.api.models.consumer.pubsub.PNPresenceEventResult;
 
+import mic.trade.bean.ThreadMessageBus;
+
 public class GatecoinPubNubService extends SubscribeCallback {
 	public static final String PUBNUB_SUBSCRIBE_KEY = "sub-c-ee68e350-4ef7-11e6-bfbb-02ee2ddab7fe";
 	public static final String PUBNUB_CHANNEL_KEY_TRANSACTION_PREFIX = "trade.";
