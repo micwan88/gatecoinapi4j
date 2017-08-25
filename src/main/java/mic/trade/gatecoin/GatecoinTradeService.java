@@ -36,8 +36,11 @@ import com.google.gson.reflect.TypeToken;
 import mic.trade.bean.MarketDepth;
 import mic.trade.bean.Order;
 import mic.trade.bean.Transaction;
+import mic.trade.gatecoin.json.MarketDepthJsonDeserializer;
+import mic.trade.gatecoin.json.OrderJsonDeserializer;
+import mic.trade.gatecoin.json.TransactionJsonDeserializer;
 
-public class GatecoinTradeService implements TradeServiceAdapter {
+public class GatecoinTradeService implements GatecoinTradeServiceAdapter {
 	public static final String APP_PROPERTY_KEY_API_PUBLIC_KEY = "gatecoin.api.pubkey";
 	public static final String APP_PROPERTY_KEY_API_PRIVATE_KEY = "gatecoin.api.prikey";
 	

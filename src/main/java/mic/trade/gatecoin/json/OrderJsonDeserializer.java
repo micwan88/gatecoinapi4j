@@ -1,4 +1,4 @@
-package mic.trade.gatecoin;
+package mic.trade.gatecoin.json;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;

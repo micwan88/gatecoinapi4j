@@ -7,7 +7,7 @@ import mic.trade.bean.MarketDepth;
 import mic.trade.bean.Order;
 import mic.trade.bean.Transaction;
 
-public interface TradeServiceAdapter {
+public interface GatecoinTradeServiceAdapter {
 	public void closeService();
 	
 	public List<Transaction> getTransactionList(String currency);
