@@ -11,22 +11,22 @@ This library is created for my own interest and it is not yet finished. So welco
 ### Features
 Below are list of features implemented already
 - GatecoinTradeService
-- [X] Post an order
-- [X] Cancel an order
-- [X] Cancel all orders
-- [X] Get list of open orders
-- [X] Get list of user transaction
-- [X] Get list of recent transactions
-- [X] Get list of transaction history
-- [X] Get market depth (all items in order book - bid/ask)
+1. Post an order
+2. Cancel an order
+3. Cancel all orders
+4. Get list of open orders
+5. Get list of user transaction
+6. Get list of recent transactions
+7. Get list of transaction history
+8. Get market depth (all items in order book - bid/ask)
 
 - GatecoinPubNubService (Data Streaming)
-- [X] Subscribe all gatecoin PubNub services
-- [X] Unsubscribe all services
-- [X] Auto reconnect handling while disconnected
-- [X] Transaction call back (transaction streaming)
-- [X] OderBook update call back (order book update streaming)
-- [X] Live/History Ticker update call back (ticker update streaming)
+1. Subscribe all gatecoin PubNub services
+2. Unsubscribe all services
+3. Auto reconnect handling while disconnected
+4. Transaction call back (transaction streaming)
+5. OderBook update call back (order book update streaming)
+6. Live/History Ticker update call back (ticker update streaming)
 
 ### Reference gatecoinapi4j in your project via local Maven repository
 To use gatecoinapi4j in your project, you can clone the project, build the jar and install it in your local maven repository by below commands.
