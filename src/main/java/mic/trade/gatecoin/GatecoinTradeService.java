@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,6 +67,7 @@ public class GatecoinTradeService implements TradeServiceAdapter {
 	
 	public static final Pattern PATTERN_RESP_MSG_OK = Pattern.compile("\"message\"\\s*\\:\\s*\"OK\"");
 	public static final Pattern PATTERN_RESP_MSG_ORDER_OK = Pattern.compile("\"clOrderId\"\\s*\\:\\s*\"(\\w+)\"\\s*,\\s*\"responseStatus\"\\s*\\:\\s*\\{\\s*\"message\"\\s*\\:\\s*\"OK\"", Pattern.MULTILINE);
+	public static final Pattern PATTERN_RESP_MSG_HISTORY_WAIT = Pattern.compile("Available in (\\d+) second\\(s\\)");
 	
 	private static final Logger myLogger = LogManager.getLogger(GatecoinTradeService.class);
 	
@@ -103,11 +105,14 @@ public class GatecoinTradeService implements TradeServiceAdapter {
 		
 		String timeToken = String.valueOf(new Date().getTime()/1000L);
 		String targetMsg = RESTFUL_HTTP_METHOD_GET + apiURL + MSG_CONTENT_TYPE_GET + timeToken;
+		String signedHashString = signedHash(targetMsg.toLowerCase(), apiPrivateKey);
+		if (signedHashString == null)
+			return null;
 		
 		HttpGet httpget = new HttpGet(apiURL);
 		
 		httpget.addHeader(HTTP_HEADER_API_PUBLIC_KEY, apiPublicKey);
-		httpget.addHeader(HTTP_HEADER_API_REQUEST_SIGNATURE, signedHash(targetMsg.toLowerCase(), apiPrivateKey));
+		httpget.addHeader(HTTP_HEADER_API_REQUEST_SIGNATURE, signedHashString);
 		httpget.addHeader(HTTP_HEADER_API_REQUEST_DATE, timeToken);
 		httpget.setHeader(HTTP_HEADER_API_CONTENT_TYPE, MSG_CONTENT_TYPE_GET);
 		
@@ -146,7 +151,10 @@ public class GatecoinTradeService implements TradeServiceAdapter {
 		
 		String timeToken = String.valueOf(new Date().getTime()/1000L);
 		String targetMsg = RESTFUL_HTTP_METHOD_POST + apiURL + MSG_CONTENT_TYPE_OTHERS + timeToken;
-				
+		String signedHashString = signedHash(targetMsg.toLowerCase(), apiPrivateKey);
+		if (signedHashString == null)
+			return null;
+		
 		HttpPost httpPost = new HttpPost(apiURL);
 		
 		JsonObject outputJson = new JsonObject();
@@ -158,7 +166,7 @@ public class GatecoinTradeService implements TradeServiceAdapter {
 		httpPost.setEntity(new StringEntity(outputJson.toString(), "UTF-8"));
 		
 		httpPost.addHeader(HTTP_HEADER_API_PUBLIC_KEY, apiPublicKey);
-		httpPost.addHeader(HTTP_HEADER_API_REQUEST_SIGNATURE, signedHash(targetMsg.toLowerCase(), apiPrivateKey));
+		httpPost.addHeader(HTTP_HEADER_API_REQUEST_SIGNATURE, signedHashString);
 		httpPost.addHeader(HTTP_HEADER_API_REQUEST_DATE, timeToken);
 		httpPost.setHeader(HTTP_HEADER_API_CONTENT_TYPE, MSG_CONTENT_TYPE_OTHERS);
 		
@@ -196,11 +204,14 @@ public class GatecoinTradeService implements TradeServiceAdapter {
 		
 		String timeToken = String.valueOf(new Date().getTime()/1000L);
 		String targetMsg = RESTFUL_HTTP_METHOD_DELETE + apiURL + MSG_CONTENT_TYPE_OTHERS + timeToken;
+		String signedHashString = signedHash(targetMsg.toLowerCase(), apiPrivateKey);
+		if (signedHashString == null)
+			return null;
 				
 		HttpDelete httpDelete = new HttpDelete(apiURL);
 		
 		httpDelete.addHeader(HTTP_HEADER_API_PUBLIC_KEY, apiPublicKey);
-		httpDelete.addHeader(HTTP_HEADER_API_REQUEST_SIGNATURE, signedHash(targetMsg.toLowerCase(), apiPrivateKey));
+		httpDelete.addHeader(HTTP_HEADER_API_REQUEST_SIGNATURE, signedHashString);
 		httpDelete.addHeader(HTTP_HEADER_API_REQUEST_DATE, timeToken);
 		httpDelete.setHeader(HTTP_HEADER_API_CONTENT_TYPE, MSG_CONTENT_TYPE_OTHERS);
 		
@@ -249,12 +260,33 @@ public class GatecoinTradeService implements TradeServiceAdapter {
 				return null;
 			}
 			
+			String responseMsg = EntityUtils.toString(httpEntity, "UTF-8");
+			if (isGetAll && responseMsg.startsWith("Available")) {
+				//Gatecoin full transaction history not always available and need wait some time
+				Matcher respMatcher = PATTERN_RESP_MSG_HISTORY_WAIT.matcher(responseMsg);
+				if (respMatcher.find()) {
+					HttpClientUtils.closeQuietly(httpResponse);
+					//Wait
+					TimeUnit.SECONDS.sleep(Long.parseLong(respMatcher.group(1)) + 5);
+					httpResponse = httpClient.execute(httpget);
+					httpEntity = httpResponse.getEntity();
+					if (httpEntity == null) {
+						myLogger.error("No content on the request: {}", apiURL);
+						return null;
+					}
+					responseMsg = EntityUtils.toString(httpEntity, "UTF-8");
+				} else {
+					myLogger.error("Unexpected response from transaction history: {}", responseMsg);
+					return null;
+				}
+			}
+			
 			Type transactionListType = new TypeToken<List<Transaction>>(){}.getType();
 			GsonBuilder gsonBuilder = new GsonBuilder();
 		    gsonBuilder.registerTypeAdapter(transactionListType, 
 		    		new TransactionJsonDeserializer(TransactionJsonDeserializer.JSON_TYPE_GATECOIN_API_TRANSACTION, currency));
 			
-		    return gsonBuilder.create().fromJson(EntityUtils.toString(httpEntity, "UTF-8"), transactionListType);
+		    return gsonBuilder.create().fromJson(responseMsg, transactionListType);
 		} catch (JsonParseException e) {
 			myLogger.error("Cannot parse json response", e);
 		} catch (IOException e) {
@@ -310,11 +342,14 @@ public class GatecoinTradeService implements TradeServiceAdapter {
 		
 		String timeToken = String.valueOf(new Date().getTime()/1000L);
 		String targetMsg = RESTFUL_HTTP_METHOD_GET + apiURL + MSG_CONTENT_TYPE_GET + timeToken;
+		String signedHashString = signedHash(targetMsg.toLowerCase(), apiPrivateKey);
+		if (signedHashString == null)
+			return null;
 		
 		HttpGet httpget = new HttpGet(apiURL);
 		
 		httpget.addHeader(HTTP_HEADER_API_PUBLIC_KEY, apiPublicKey);
-		httpget.addHeader(HTTP_HEADER_API_REQUEST_SIGNATURE, signedHash(targetMsg.toLowerCase(), apiPrivateKey));
+		httpget.addHeader(HTTP_HEADER_API_REQUEST_SIGNATURE, signedHashString);
 		httpget.addHeader(HTTP_HEADER_API_REQUEST_DATE, timeToken);
 		httpget.setHeader(HTTP_HEADER_API_CONTENT_TYPE, MSG_CONTENT_TYPE_GET);
 		
