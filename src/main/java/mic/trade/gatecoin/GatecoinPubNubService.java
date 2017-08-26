@@ -29,26 +29,26 @@ public class GatecoinPubNubService extends SubscribeCallback {
 	private long errorSleepTime = 5000L;
 	private PubNub pubNubClient = null;
 	private GatecoinPubNubCallBackInterface pubNubCallBackService = null;
-	private TradeMessage messageBus = null;
+	private TradeMessage tradeMessage = null;
 
 	public void setErrorSleepTime(long errorSleepTime) {
 		myLogger.debug("setErrorSleepTime for pubnubservice: {}", errorSleepTime);
 		this.errorSleepTime = errorSleepTime;
 	}
 
-	public TradeMessage getMessageBus() {
-		return messageBus;
+	public TradeMessage getTradeMessage() {
+		return tradeMessage;
 	}
 	
 	public GatecoinPubNubService(GatecoinPubNubCallBackInterface pubNubCallBackService, long errorSleepTime) {
 		this(pubNubCallBackService, errorSleepTime, new TradeMessage());
 	}
 	
-	public GatecoinPubNubService(GatecoinPubNubCallBackInterface pubNubCallBackService, long errorSleepTime, TradeMessage messageBus) {
+	public GatecoinPubNubService(GatecoinPubNubCallBackInterface pubNubCallBackService, long errorSleepTime, TradeMessage tradeMessage) {
 		myLogger.debug("Init GatecoinPubNubService");
 		
 		this.pubNubCallBackService = pubNubCallBackService;
-		this.messageBus = messageBus;	
+		this.tradeMessage = tradeMessage;	
 		this.errorSleepTime = errorSleepTime;
 		
 		PNConfiguration pnConfiguration = new PNConfiguration();
@@ -135,7 +135,7 @@ public class GatecoinPubNubService extends SubscribeCallback {
 						default:
 							if (status.isError()) {
 								myLogger.error("Unknown status error: {}", status);
-								messageBus.setErrMsg(status.toString());
+								tradeMessage.setErrMsg(status.toString());
 							}
 							break;
 					}

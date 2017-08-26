@@ -23,7 +23,7 @@ public interface GatecoinPubNubCallBackInterface {
 	
 	public void msgTickerHistoryCallBack(PubNub pubnub, PNMessageResult message);
 	
-	public TradeMessage getMessageBus();
+	public TradeMessage getTradeMessage();
 	
 	public void destroy();
 }
