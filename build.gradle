@@ -6,14 +6,33 @@
  * user guide available at https://docs.gradle.org/3.5/userguide/java_library_plugin.html
  */
 
+buildscript {
+	repositories {
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	dependencies {
+		classpath "org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.1"
+	}
+}
+
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
 apply plugin: 'jacoco'
+apply plugin: 'com.github.kt3k.coveralls'
 
 version = '0.1.0-SNAPSHOT'
 group = 'mic.trade'
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true // coveralls plugin depends on xml format report
+        html.enabled = true
+    }
+}
 
 // In this section you declare where to find the dependencies of your project
 repositories {
