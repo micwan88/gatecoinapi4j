@@ -12,27 +12,49 @@ So welcome anyone contribute to it.
 ### Features
 Below are list of features implemented already
 - GatecoinTradeService
-	1. Post an order
-	2. Cancel an order
-	3. Cancel all orders
-	4. Get list of open orders
-	5. Get list of user transaction
-	6. Get list of recent transactions
-	7. Get list of transaction history
-	8. Get market depth (all items in order book - bid/ask)
+1. Post an order
+2. Cancel an order
+3. Cancel all orders
+4. Get list of open orders
+5. Get list of user transaction
+6. Get list of recent transactions
+7. Get list of transaction history
+8. Get market depth (all items in order book - bid/ask)
 
 - GatecoinPubNubService (Data Streaming)
-	1. Subscribe all gatecoin PubNub services
-	2. Unsubscribe all services
-	3. Auto reconnect handling while disconnected
-	3. Transaction call back (transaction streaming)
-	4. OderBook update call back (order book update streaming)
-	5. Live/History Ticker update call back (ticker update streaming)
+1. Subscribe all gatecoin PubNub services
+2. Unsubscribe all services
+3. Auto reconnect handling while disconnected
+3. Transaction call back (transaction streaming)
+4. OderBook update call back (order book update streaming)
+5. Live/History Ticker update call back (ticker update streaming)
 
-### Building a jar for your project
+### Reference the library in your project by using local Maven repository
 ```
 git clone https://github.com/micwan88/gatecoinapi4j.git
 cd gatecoinapi4j
-gradle clean jar
+./gradlew clean install
+```
+After that, gatecoinapi4j-[version].jar should be installed under your user directory of ~/.m2
+Now you can reference the jar file in build.gradle for your project.
+``` gradle
+repositories {
+    mavenLocal()
+    //You can add other repository here (like jcenter / mavenCentral) and
+    //mavenLocal is use for reference jar build from gatecoinapi4j
+}
+
+//Please modify the below version to match with the source of gatecoinapi4j
+dependencies {
+	//GatecoinApi4J
+	compile group: 'mic.trade', name: 'gatecoinapi4j', version: '0.1.0-SNAPSHOT'
+}
+``` 
+
+### Building a jar only
+```
+git clone https://github.com/micwan88/gatecoinapi4j.git
+cd gatecoinapi4j
+./gradlew clean jar
 ```
 After that, you can find your gatecoinapi4j.jar in ${project.projectDir}/build/libs
