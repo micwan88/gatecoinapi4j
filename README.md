@@ -35,7 +35,7 @@ git clone https://github.com/micwan88/gatecoinapi4j.git
 cd gatecoinapi4j
 ./gradlew clean install
 ```
-After that, gatecoinapi4j-[version].jar should be installed under your user directory of `~/.m2` and now you can reference the jar file in build.gradle for your project.
+After that, `gatecoinapi4j-[version].jar` should be installed under your user directory of `~/.m2` and now you can reference the jar file in `build.gradle` for your project.
 ``` gradle
 repositories {
     mavenLocal()
