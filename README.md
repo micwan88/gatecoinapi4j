@@ -6,8 +6,7 @@
 This is a java implementation of [Gatecoin](https://gatecoin.com/) api included RESTful call and PubNub subscribe service (Real time data streaming over Web Socket).
 
 ### Contribution
-This library is created for my own interest and it is not yet finished.
-So welcome anyone contribute to it.
+This library is created for my own interest and it is not yet finished. So welcome anyone contribute to it.
 
 ### Features
 Below are list of features implemented already
@@ -29,14 +28,14 @@ Below are list of features implemented already
 4. OderBook update call back (order book update streaming)
 5. Live/History Ticker update call back (ticker update streaming)
 
-### Reference the library in your project by using local Maven repository
+### Reference gatecoinapi4j in your project via local Maven repository
+To use gatecoinapi4j in your project, you can clone the project, build the jar and install it in your local maven repository by below commands.
 ```
 git clone https://github.com/micwan88/gatecoinapi4j.git
 cd gatecoinapi4j
 ./gradlew clean install
 ```
-After that, gatecoinapi4j-[version].jar should be installed under your user directory of ~/.m2
-Now you can reference the jar file in build.gradle for your project.
+After that, gatecoinapi4j-[version].jar should be installed under your user directory of `~/.m2` and now you can reference the jar file in build.gradle for your project.
 ``` gradle
 repositories {
     mavenLocal()
