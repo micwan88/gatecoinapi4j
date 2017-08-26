@@ -57,3 +57,35 @@ cd gatecoinapi4j
 ./gradlew clean jar
 ```
 After that, you can find your gatecoinapi4j.jar in ${project.projectDir}/build/libs
+
+### GatecoinTradeService Example
+``` java
+public static void main(String[] args) {
+		/**
+		 * Api key is generated from gatecoin web with your account and this is necessary for post order / cancel order
+		 * Default constructor is enough if you only use public api such as getting transaction / market depth (order book items) 
+		 */
+		GatecoinTradeService gatecoinTradeService = new GatecoinTradeService("<yourApiPublicKey>", "<yourApiPrivateKey>");
+		
+		//Get recent transaction
+		List<Transaction> transactionList = gatecoinTradeService.getTransactionList("ETHHKD");
+		for (Transaction transaction : transactionList)
+			System.out.println("Time: " + transaction.gettTime() + " Price: " + transaction.getPrice());
+		
+		//Post an order
+		String orderID = gatecoinTradeService.postOrder("ETHHKD", true, new BigDecimal("1"), new BigDecimal("2400"));
+		if (orderID == null || orderID.equals(""))
+			System.out.println("Cannot post an order");
+		else {
+			System.out.println("Post order completed");
+			
+			//Cancel an order
+			String result = gatecoinTradeService.cancelOpenOrder(orderID);
+			if (result != null && result.equals("OK"))
+				System.out.println("Cancel order completed");
+		}
+		
+		//Call closeService to free up httpclient resources
+		gatecoinTradeService.closeService();
+	}
+```
