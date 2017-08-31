@@ -32,24 +32,24 @@ public class TestGatecoinTradeService {
 	@Test
 	public void testGetRecentTransaction() {
 		List<Transaction> transactionList = tradeService.getTransactionList(TESTING_CURRENCY, false);
-		assertNotNull(transactionList);
+		assertNotNull("transactionList should not be null if success", transactionList);
 		
 		int listSize = transactionList.size();
 		
-		assertTrue(listSize > 0);
+		assertTrue("transactionList.size should > 0 if normal", listSize > 0);
 		
 		//Test overload method
 		transactionList = tradeService.getTransactionList(TESTING_CURRENCY);
 		
 		//Size should be the same
-		assertEquals(listSize, transactionList.size());
+		assertEquals("transactionList.size() should same as before", listSize, transactionList.size());
 	}
 	
 	@Test
 	public void testGetTransactionHistory() {
 		List<Transaction> transactionList = tradeService.getTransactionList(TESTING_CURRENCY, true);
-		assertNotNull(transactionList);
-		assertTrue(transactionList.size() > 0);
+		assertNotNull("transactionList should not be null if success", transactionList);
+		assertTrue("transactionList.size should > 0 if normal", transactionList.size() > 0);
 	}
 	
 	@Test
@@ -57,27 +57,27 @@ public class TestGatecoinTradeService {
 		MarketDepth marketDepth = tradeService.getMarketDepth(TESTING_CURRENCY, 
 				MarketDepthJsonDeserializer.JSON_TYPE_FILTER_MODE_BIDASK);
 		
-		assertTrue(marketDepth.getAskUnits().size() > 0);
-		assertTrue(marketDepth.getBidUnits().size() > 0);
+		assertTrue("Ask.size should > 0 if normal", marketDepth.getAskUnits().size() > 0);
+		assertTrue("Bid.size should > 0 if normal", marketDepth.getBidUnits().size() > 0);
 		
 		//Test overload method
 		marketDepth = tradeService.getMarketDepth(TESTING_CURRENCY);
 		
-		assertTrue(marketDepth.getAskUnits().size() > 0);
-		assertTrue(marketDepth.getBidUnits().size() > 0);
+		assertTrue("Ask.size should > 0 if normal", marketDepth.getAskUnits().size() > 0);
+		assertTrue("Bid.size should > 0 if normal", marketDepth.getBidUnits().size() > 0);
 		
 		//Test bidUnit Filter
 		marketDepth = tradeService.getMarketDepth(TESTING_CURRENCY, 
 				MarketDepthJsonDeserializer.JSON_TYPE_FILTER_MODE_BID);
 		
-		assertTrue(marketDepth.getAskUnits().size() == 0);
-		assertTrue(marketDepth.getBidUnits().size() > 0);
+		assertTrue("Ask.size should == 0 if in bid filter mode", marketDepth.getAskUnits().size() == 0);
+		assertTrue("Bid.size should > 0 if normal", marketDepth.getBidUnits().size() > 0);
 		
 		//Test bidUnit Filter
 		marketDepth = tradeService.getMarketDepth(TESTING_CURRENCY, 
 				MarketDepthJsonDeserializer.JSON_TYPE_FILTER_MODE_ASK);
 		
-		assertTrue(marketDepth.getAskUnits().size() > 0);
-		assertTrue(marketDepth.getBidUnits().size() == 0);
+		assertTrue("Ask.size should > 0 if normal", marketDepth.getAskUnits().size() > 0);
+		assertTrue("Bid.size should == 0 if in bid filter mode", marketDepth.getBidUnits().size() == 0);
 	}
 }
