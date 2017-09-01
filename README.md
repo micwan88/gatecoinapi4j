@@ -89,3 +89,7 @@ public static void main(String[] args) {
 	gatecoinTradeService.closeService();
 }
 ```
+
+
+### License
+gatecoinapi4j is under [MIT License](https://github.com/micwan88/gatecoinapi4j/blob/master/LICENSE)
