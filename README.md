@@ -44,6 +44,16 @@ In your pom file, add below dependency (please modify the version accordingly, r
 ### Gradle project
 In your build.gradle, add below dependency (please modify the version accordingly, refer to release)
 ``` gradle
+repositories {
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+    
+    //This is maven repos for gatecoinapi4j
+    maven {
+		url "https://dl.bintray.com/micwan88/micMavenRepos/"
+	}
+}
+
 dependencies {
 	//GatecoinApi4J
 	compile group: 'mic.trade', name: 'gatecoinapi4j', version: '1.0.0'
