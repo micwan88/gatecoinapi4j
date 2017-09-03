@@ -5,10 +5,10 @@
 
 This is a java implementation of [Gatecoin](https://gatecoin.com/) api included RESTful call and PubNub subscribe service (Real time data streaming over Web Socket).
 
-### Contribution
+## Contribution
 This library is created for my own interest and it is not yet finished. So welcome anyone contribute to it.
 
-### Features
+## Features
 Below are list of features implemented already
 - GatecoinTradeService
 1. Post an order
@@ -28,6 +28,27 @@ Below are list of features implemented already
 5. OderBook update call back (order book update streaming)
 6. Live/History Ticker update call back (ticker update streaming)
 
+## Using gatecoinapi4j
+### Maven project
+In your pom file, add below dependency (please modify the version accordingly, refer to release)
+```
+<dependency>
+	<groupId>mic.trade</groupId>
+	<artifactId>gatecoinapi4j</artifactId>
+	<version>1.0.0</version>
+	<type>pom</type>
+</dependency>
+```
+
+### Gradle project
+In your build.gradle, add below dependency (please modify the version accordingly, refer to release)
+``` gradle
+dependencies {
+	//GatecoinApi4J
+	compile group: 'mic.trade', name: 'gatecoinapi4j', version: '1.0.0'
+}
+```
+
 ### Reference gatecoinapi4j in your project via local Maven repository
 To use gatecoinapi4j in your project, you can clone the project, build the jar and install it in your local maven repository by below commands.
 ```
@@ -46,19 +67,20 @@ repositories {
 //Please modify the below version to match with the source of gatecoinapi4j
 dependencies {
 	//GatecoinApi4J
-	compile group: 'mic.trade', name: 'gatecoinapi4j', version: '0.1.0-SNAPSHOT'
+	compile group: 'mic.trade', name: 'gatecoinapi4j', version: '1.0.1-SNAPSHOT'
 }
 ``` 
 
-### Building a jar only
+### Building a jar and then add it to your project
 ```
 git clone https://github.com/micwan88/gatecoinapi4j.git
 cd gatecoinapi4j
 ./gradlew clean jar
 ```
-After that, you can find your gatecoinapi4j.jar in ${project.projectDir}/build/libs
+After that, you can find your `gatecoinapi4j-[version].jar` in `${project.projectDir}/build/libs`. So you can copy it into your project.
 
-### Example - GatecoinTradeService
+## Example
+### GatecoinTradeService
 ``` java
 public static void main(String[] args) {
 	/**
@@ -90,6 +112,5 @@ public static void main(String[] args) {
 }
 ```
 
-
-### License
+## License
 gatecoinapi4j is under [MIT License](https://github.com/micwan88/gatecoinapi4j/blob/master/LICENSE)

@@ -24,7 +24,7 @@ apply plugin: 'maven'
 apply plugin: 'jacoco'
 apply plugin: 'com.github.kt3k.coveralls'
 
-version = '1.0.0'
+version = '1.0.1-SNAPSHOT'
 group = 'mic.trade'
 
 jacocoTestReport {
