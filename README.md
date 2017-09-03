@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/micwan88/gatecoinapi4j.svg?branch=master)](https://travis-ci.org/micwan88/gatecoinapi4j)
 [![Coverage Status](https://coveralls.io/repos/github/micwan88/gatecoinapi4j/badge.svg?branch=master)](https://coveralls.io/github/micwan88/gatecoinapi4j?branch=master)
+[ ![Download](https://api.bintray.com/packages/micwan88/micMavenRepos/gatecoinapi4j/images/download.svg) ](https://bintray.com/micwan88/micMavenRepos/gatecoinapi4j/_latestVersion)
 
 This is a java implementation of [Gatecoin](https://gatecoin.com/) api included RESTful call and PubNub subscribe service (Real time data streaming over Web Socket).
 
