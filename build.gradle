@@ -32,6 +32,13 @@ jacocoTestReport {
         xml.enabled = true // coveralls plugin depends on xml format report
         html.enabled = true
     }
+    
+    //Exclude example source for coverage test
+    afterEvaluate {
+    	classDirectories = files(classDirectories.files.collect {
+    		fileTree(dir: it, exclude: 'mic/trade/examples/**')
+    	})
+    }
 }
 
 // In this section you declare where to find the dependencies of your project

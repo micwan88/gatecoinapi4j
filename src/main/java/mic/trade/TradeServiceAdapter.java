@@ -7,9 +7,7 @@ import mic.trade.bean.MarketDepth;
 import mic.trade.bean.Order;
 import mic.trade.bean.Transaction;
 
-public interface TradeServiceAdapter {
-	public void closeService();
-	
+public interface TradeServiceAdapter extends AutoCloseable {
 	public List<Transaction> getTransactionList(String currency);
 	
 	public String cancelOpenOrder(String orderID);

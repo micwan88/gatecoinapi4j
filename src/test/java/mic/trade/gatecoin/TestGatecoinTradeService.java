@@ -26,7 +26,11 @@ public class TestGatecoinTradeService {
 	
 	@After
 	public void afterTest() {
-		tradeService.closeService();
+		try {
+			tradeService.close();
+		} catch (Exception e) {
+			//Do nothing
+		}
 	}
 	
 	@Test

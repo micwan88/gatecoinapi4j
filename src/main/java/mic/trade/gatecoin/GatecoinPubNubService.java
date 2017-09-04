@@ -16,7 +16,7 @@ import com.pubnub.api.models.consumer.pubsub.PNPresenceEventResult;
 
 import mic.trade.bean.TradeMessage;
 
-public class GatecoinPubNubService extends SubscribeCallback {
+public class GatecoinPubNubService extends SubscribeCallback implements AutoCloseable {
 	public static final String PUBNUB_SUBSCRIBE_KEY = "sub-c-ee68e350-4ef7-11e6-bfbb-02ee2ddab7fe";
 	public static final String PUBNUB_CHANNEL_KEY_TRANSACTION_PREFIX = "trade.";
 	public static final String PUBNUB_CHANNEL_KEY_ORDERBOOK_PREFIX = "order.";
@@ -73,7 +73,20 @@ public class GatecoinPubNubService extends SubscribeCallback {
 		pubNubClient.unsubscribeAll();
 	}
 	
-	public void closeService() {
+	/**
+	 * Static method to close the service gracefully
+	 * @param GatecoinPubNubService
+	 */
+	public static void closeQuietly(GatecoinPubNubService service) {
+		try {
+			service.close();
+		} catch (Exception e) {
+			//Do Nothing
+		}
+	}
+	
+	@Override
+	public void close() throws Exception {
 		myLogger.debug("closeService");
 		
 		pubNubCallBackService.destroy();

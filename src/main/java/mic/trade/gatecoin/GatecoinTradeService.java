@@ -95,10 +95,24 @@ public class GatecoinTradeService implements TradeServiceAdapter {
 		httpClient = HttpClients.createDefault();
 	}
 	
-	public void closeService() {
-		HttpClientUtils.closeQuietly(httpClient);
+	/**
+	 * Static method to close the service gracefully
+	 * @param GatecoinTradeService
+	 */
+	public static void closeQuietly(GatecoinTradeService service) {
+		try {
+			service.close();
+		} catch (Exception e) {
+			//Do Nothing
+		}
 	}
 	
+	@Override
+	public void close() throws Exception {
+		httpClient.close();
+	}
+	
+	@Override
 	public List<Order> getOrders(String orderID) {
 		String apiURL = URL_ORDERS + (orderID==null?"":"/" + orderID);
 		myLogger.debug("getOrders URL: {}", apiURL);
@@ -144,6 +158,7 @@ public class GatecoinTradeService implements TradeServiceAdapter {
 		return null;
 	}
 	
+	@Override
 	public String postOrder(String currency, boolean isBuy, BigDecimal amount, BigDecimal atPrice) {
 		String apiURL = URL_ORDERS;
 		
@@ -197,6 +212,11 @@ public class GatecoinTradeService implements TradeServiceAdapter {
 		return null;
 	}
 	
+	public String cancelOpenOrder() {
+		return cancelOpenOrder(null);
+	}
+	
+	@Override
 	public String cancelOpenOrder(String orderID) {
 		String apiURL = URL_ORDERS + (orderID==null?"":"/" + orderID);
 		
@@ -242,6 +262,7 @@ public class GatecoinTradeService implements TradeServiceAdapter {
 		return null;
 	}
 	
+	@Override
 	public List<Transaction> getTransactionList(String currency) {
 		return getTransactionList(currency, false);
 	}
@@ -300,6 +321,7 @@ public class GatecoinTradeService implements TradeServiceAdapter {
 		return null;
 	}
 	
+	@Override
 	public MarketDepth getMarketDepth(String currency) {
 		return getMarketDepth(currency, MarketDepthJsonDeserializer.JSON_TYPE_FILTER_MODE_BIDASK);
 	}
@@ -336,6 +358,7 @@ public class GatecoinTradeService implements TradeServiceAdapter {
 		return null;
 	}
 	
+	@Override
 	public List<Transaction> getTrades(String transactionID) {
 		String apiURL = URL_GET_USER_TRADES + (transactionID==null?"":"?TransactionID=" + transactionID);
 		myLogger.debug("getTrades URL: {}", apiURL);
