@@ -31,7 +31,44 @@ Below are list of features implemented already
 
 ## Using gatecoinapi4j
 ### Maven project
-In your pom file, add below dependency (please modify the version accordingly, refer to release)
+First, you need add jcenter repository in Maven `settings.xml` as gatecoinapi4j only host in jcenter currently.
+
+``` xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<settings xsi:schemaLocation='http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd'
+          xmlns='http://maven.apache.org/SETTINGS/1.0.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+	<profiles>
+		<profile>
+			<repositories>
+				<repository>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+					<id>central</id>
+					<name>bintray</name>
+					<url>https://jcenter.bintray.com</url>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+					<id>central</id>
+					<name>bintray-plugins</name>
+					<url>https://jcenter.bintray.com</url>
+				</pluginRepository>
+			</pluginRepositories>
+			<id>bintray</id>
+		</profile>
+	</profiles>
+	<activeProfiles>
+		<activeProfile>bintray</activeProfile>
+	</activeProfiles>
+</settings>
+```
+
+After that, add below dependency in your project pom file (please modify the version accordingly, refer to release)
 ```
 <dependency>
 	<groupId>mic.trade</groupId>
@@ -45,13 +82,8 @@ In your pom file, add below dependency (please modify the version accordingly, r
 In your build.gradle, add below dependency (please modify the version accordingly, refer to release)
 ``` gradle
 repositories {
-    // You can declare any Maven/Ivy/file repository here.
+    // gatecoinapi4j is hosting in jcenter
     jcenter()
-    
-    //This is maven repos for gatecoinapi4j
-    maven {
-		url "https://dl.bintray.com/micwan88/micMavenRepos/"
-	}
 }
 
 dependencies {
@@ -92,6 +124,8 @@ After that, you can find your `gatecoinapi4j-[version].jar` in `${project.projec
 
 ## Example
 ### GatecoinTradeService
+More examples can be found under `src/main/java/mic/trade/examples/`
+
 ``` java
 public static void main(String[] args) {
 	/**
@@ -108,18 +142,96 @@ public static void main(String[] args) {
 	//Post an order
 	String orderID = gatecoinTradeService.postOrder("ETHHKD", true, new BigDecimal("1"), new BigDecimal("2400"));
 	if (orderID == null || orderID.equals(""))
-		System.out.println("Cannot post an order");
+		System.err.println("Cannot post an order");
 	else {
 		System.out.println("Post order completed");
 		
-		//Cancel an order
-		String result = gatecoinTradeService.cancelOpenOrder(orderID);
+		//Cancel all open order for your account
+		String result = gatecoinTradeService.cancelOpenOrder();
 		if (result != null && result.equals("OK"))
 			System.out.println("Cancel order completed");
 	}
 	
-	//Call closeService to free up httpclient resources
-	gatecoinTradeService.closeService();
+	//Call closeService to free up underlying httpclient resources
+	GatecoinTradeService.closeQuietly(gatecoinTradeService);
+}
+```
+
+### GatecoinPubNubService (Real time data streaming)
+More examples can be found under `src/main/java/mic/trade/examples/`
+
+``` java
+public static void main(String[] args) {
+	//Init gson
+	Type transactionListType = new TypeToken<List<Transaction>>(){}.getType();
+	GsonBuilder gsonBuilder = new GsonBuilder();
+	gsonBuilder.registerTypeAdapter(transactionListType, 
+			new TransactionJsonDeserializer(TransactionJsonDeserializer.JSON_TYPE_GATECOIN_PUBNUB_TRANSACTION, 
+					GatecoinCommonConst.TRADE_CURRENCY_ETHHKD));
+	Gson gson = gsonBuilder.create();
+	
+	//Define custom call back
+	GatecoinPubNubCallBackInterface myCustomCallBack = new GatecoinPubNubCallBackInterface() {
+		@Override
+		public void unsubscribedCallBack(PubNub pubnub, PNStatus status) {
+		}
+		
+		@Override
+		public void reconnectCallBack(PubNub pubnub, PNStatus status) {
+		}
+		
+		@Override
+		public void msgTransactionCallBack(PubNub pubnub, PNMessageResult message) {
+			List<Transaction> transactionList = gson.fromJson(message.getMessage(), transactionListType);
+			System.out.println("Got new transaction - " + transactionList.get(0));
+		}
+		
+		@Override
+		public void msgTickerHistoryCallBack(PubNub pubnub, PNMessageResult message) {
+		}
+		
+		@Override
+		public void msgTicker24hCallBack(PubNub pubnub, PNMessageResult message) {
+		}
+		
+		@Override
+		public void msgOrderbookCallBack(PubNub pubnub, PNMessageResult message) {
+		}
+		
+		@Override
+		public void msgMktDepthCallBack(PubNub pubnub, PNMessageResult message) {
+		}
+		
+		@Override
+		public TradeMessage getTradeMessage() {
+			return null;
+		}
+		
+		@Override
+		public void destroy() {
+		}
+		
+		@Override
+		public void connectedCallBack(PubNub pubnub, PNStatus status) {
+		}
+	};
+	
+	GatecoinPubNubService gatecoinPubNubService = new GatecoinPubNubService(myCustomCallBack, 5000L);
+	
+	String[] channelNameArray = new String[] {
+			GatecoinPubNubService.PUBNUB_CHANNEL_KEY_TRANSACTION_PREFIX + GatecoinCommonConst.TRADE_CURRENCY_ETHHKD
+	};
+	
+	gatecoinPubNubService.subscribeService(channelNameArray);
+	
+	try {
+		//Play the data streaming for 2 minutes
+		TimeUnit.MINUTES.sleep(2);
+	} catch (InterruptedException e) {
+		//Do Nothing
+	}
+	
+	GatecoinPubNubService.closeQuietly(gatecoinPubNubService);
 }
 ```
 
