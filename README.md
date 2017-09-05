@@ -110,7 +110,7 @@ repositories {
 //Please modify the below version to match with the source of gatecoinapi4j
 dependencies {
 	//GatecoinApi4J
-	compile group: 'mic.trade', name: 'gatecoinapi4j', version: '1.0.2-SNAPSHOT'
+	compile group: 'mic.trade', name: 'gatecoinapi4j', version: '1.0.3-SNAPSHOT'
 }
 ``` 
 
