@@ -8,6 +8,12 @@ import mic.trade.bean.Order;
 import mic.trade.bean.Transaction;
 
 public interface TradeServiceAdapter extends AutoCloseable {
+	/**
+	 * Implement AutoCloseable but without Exception
+	 */
+	@Override
+	public void close();
+
 	public List<Transaction> getTransactionList(String currency);
 	
 	public String cancelOpenOrder(String orderID);
