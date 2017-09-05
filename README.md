@@ -124,7 +124,7 @@ After that, you can find your `gatecoinapi4j-[version].jar` in `${project.projec
 
 ## Example
 ### GatecoinTradeService
-More examples can be found under [examples](https://github.com/micwan88/gatecoinapi4j/tree/master/src/main/java/mic/trade/examples/gatecoin)
+More examples can be found under [examples](https://github.com/micwan88/gatecoinapi4j/tree/master/src/main/java/mic/trade/examples/gatecoin) folder
 
 ``` java
 public static void main(String[] args) {
