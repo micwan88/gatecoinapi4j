@@ -73,7 +73,7 @@ After that, add below dependency in your project pom file (please modify the ver
 <dependency>
 	<groupId>mic.trade</groupId>
 	<artifactId>gatecoinapi4j</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<type>pom</type>
 </dependency>
 ```
@@ -88,7 +88,7 @@ repositories {
 
 dependencies {
 	//GatecoinApi4J
-	compile group: 'mic.trade', name: 'gatecoinapi4j', version: '1.0.1'
+	compile group: 'mic.trade', name: 'gatecoinapi4j', version: '1.0.2'
 }
 ```
 
