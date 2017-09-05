@@ -31,8 +31,6 @@ public class OrderExample {
 				else
 					System.err.println("Cannot cancel order");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 }

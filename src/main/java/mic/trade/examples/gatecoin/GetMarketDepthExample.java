@@ -38,8 +38,6 @@ public class GetMarketDepthExample {
 			unitList = marketDepth.getBidUnits();
 			for (Unit marketUnit : unitList)
 				System.out.println("Bid Market Unit - " + marketUnit);
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 }

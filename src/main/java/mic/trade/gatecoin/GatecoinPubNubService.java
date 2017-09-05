@@ -74,19 +74,11 @@ public class GatecoinPubNubService extends SubscribeCallback implements AutoClos
 	}
 	
 	/**
-	 * Static method to close the service gracefully
-	 * @param GatecoinPubNubService
+	 * This is a method to release underlying resources by PubNub
+	 * Implemented AutoCloseable but suppressed the exception
 	 */
-	public static void closeQuietly(GatecoinPubNubService service) {
-		try {
-			service.close();
-		} catch (Exception e) {
-			//Do Nothing
-		}
-	}
-	
 	@Override
-	public void close() throws Exception {
+	public void close() {
 		myLogger.debug("closeService");
 		
 		pubNubCallBackService.destroy();

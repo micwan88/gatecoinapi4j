@@ -92,6 +92,6 @@ public class GetTransactionStreamingExample {
 			//Do Nothing
 		}
 		
-		GatecoinPubNubService.closeQuietly(gatecoinPubNubService);
+		gatecoinPubNubService.close();
 	}
 }

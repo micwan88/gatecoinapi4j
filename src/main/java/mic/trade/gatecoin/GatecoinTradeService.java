@@ -96,20 +96,12 @@ public class GatecoinTradeService implements TradeServiceAdapter {
 	}
 	
 	/**
-	 * Static method to close the service gracefully
-	 * @param GatecoinTradeService
+	 * This is a method to release underlying resources by httpclient
+	 * Implemented AutoCloseable but suppressed the exception
 	 */
-	public static void closeQuietly(GatecoinTradeService service) {
-		try {
-			service.close();
-		} catch (Exception e) {
-			//Do Nothing
-		}
-	}
-	
 	@Override
-	public void close() throws Exception {
-		httpClient.close();
+	public void close() {
+		HttpClientUtils.closeQuietly(httpClient);
 	}
 	
 	@Override

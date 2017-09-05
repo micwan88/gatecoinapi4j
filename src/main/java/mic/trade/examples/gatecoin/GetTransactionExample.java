@@ -29,8 +29,6 @@ public class GetTransactionExample {
 				return;
 			}
 			System.out.println("History size: " + transactionList.size());
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 }

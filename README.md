@@ -124,7 +124,7 @@ After that, you can find your `gatecoinapi4j-[version].jar` in `${project.projec
 
 ## Example
 ### GatecoinTradeService
-More examples can be found under `src/main/java/mic/trade/examples/`
+More examples can be found under [examples](https://github.com/micwan88/gatecoinapi4j/tree/master/src/main/java/mic/trade/examples/gatecoin)
 
 ``` java
 public static void main(String[] args) {
@@ -152,13 +152,13 @@ public static void main(String[] args) {
 			System.out.println("Cancel order completed");
 	}
 	
-	//Call closeService to free up underlying httpclient resources
-	GatecoinTradeService.closeQuietly(gatecoinTradeService);
+	//Call close to free up underlying httpclient resources
+	gatecoinTradeService.close();
 }
 ```
 
 ### GatecoinPubNubService (Real time data streaming)
-More examples can be found under `src/main/java/mic/trade/examples/`
+More examples can be found under [examples](https://github.com/micwan88/gatecoinapi4j/tree/master/src/main/java/mic/trade/examples/gatecoin) folder
 
 ``` java
 public static void main(String[] args) {
@@ -231,7 +231,7 @@ public static void main(String[] args) {
 		//Do Nothing
 	}
 	
-	GatecoinPubNubService.closeQuietly(gatecoinPubNubService);
+	gatecoinPubNubService.close();
 }
 ```
 
